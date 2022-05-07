@@ -1760,6 +1760,18 @@ void *W_CachePatchName(const char *name, INT32 tag)
 	return W_CachePatchNum(num, tag);
 }
 
+// Same function as the above, but returns NULL if the patch couldn't be found.
+void *W_CachePatchName2(const char *name, INT32 tag)
+{
+	lumpnum_t num;
+
+	num = W_CheckNumForName(name);
+
+	if (num == LUMPERROR)
+		return NULL;
+	return W_CachePatchNum(num, tag);
+}
+
 void *W_CachePatchLongName(const char *name, INT32 tag)
 {
 	lumpnum_t num;

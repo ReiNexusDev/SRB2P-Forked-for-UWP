@@ -190,6 +190,7 @@ boolean W_IsPatchCached(lumpnum_t lump, void *ptr);
 
 void *W_CacheLumpName(const char *name, INT32 tag);
 void *W_CachePatchName(const char *name, INT32 tag);
+void *W_CachePatchName2(const char *name, INT32 tag);
 void *W_CachePatchLongName(const char *name, INT32 tag);
 
 // Returns either a Software patch, or an OpenGL patch.
