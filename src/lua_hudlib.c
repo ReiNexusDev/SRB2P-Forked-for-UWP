@@ -646,7 +646,7 @@ static int libd_drawIndexStretched(lua_State *L)
 		return luaL_error(L, "negative scale");
 	vscale = luaL_checkinteger(L, 4);
 	if (vscale < 0)
-		return luaL_error(L, "negative vscale");	
+		return luaL_error(L, "negative vscale");
 	patch = *((patch_t **)luaL_checkudata(L, 5, META_PATCH));
 	flags = luaL_optinteger(L, 6, 0);
 	color = luaL_checkinteger(L, 7);
@@ -770,7 +770,6 @@ static int libd_genericString(lua_State *L)
 	V_SRB2PgenericDrawString(x, y, str, prefix, flags, align, color, color2, scale);
 
 	return 0;
-
 }
 
 static int libd_drawString(lua_State *L)
@@ -946,6 +945,18 @@ static int libd_stringWidth(lua_State *L)
 		lua_pushinteger(L, V_ThinStringWidth(str, flags));
 		break;
 	}
+	return 1;
+}
+
+static int libd_genericStringWidth(lua_State *L)
+{
+	const char *str = luaL_checkstring(L, 1);
+	const char *prefix = luaL_checkstring(L, 2);
+	fixed_t scale = luaL_optinteger(L, 3, FRACUNIT/2);
+
+	HUDONLY
+
+	lua_pushinteger(L, V_SRB2PgenericStringWidth(str, prefix, scale));
 	return 1;
 }
 
@@ -1168,6 +1179,7 @@ static luaL_Reg lib_draw[] = {
 	// misc
 	{"stringWidth", libd_stringWidth},
 	{"nameTagWidth", libd_nameTagWidth},
+	{"genericStringWidth", libd_genericStringWidth},
 	// m_random
 	{"RandomFixed",libd_RandomFixed},
 	{"RandomByte",libd_RandomByte},
