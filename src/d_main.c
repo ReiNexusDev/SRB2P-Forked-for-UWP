@@ -1349,9 +1349,9 @@ void D_SRB2Main(void)
 
 	// Check MD5s of autoloaded files
 	//W_VerifyFileMD5(0, ASSET_HASH_SRB2_PK3); 			// srb2.pk3		SRB2P: Don't verify this file in case of SRB2 updates. We only care about the assets in there, so it's not worth checking.
-	W_VerifyFileMD5(1, ASSET_HASH_SRB2P_MAIN_PK3);		// SRB2P-main.pk3
-	W_VerifyFileMD5(2, ASSET_HASH_SRB2P_GRAPHICS_PK3);	// SRB2P-graphics.pk3
-	W_VerifyFileMD5(3, ASSET_HASH_SRB2P_CHARS_WAD);		// SRB2P-chars.wad
+	W_VerifyFileMD5(1, ASSET_HASH_SRB2P_GRAPHICS_PK3);	// SRB2P-graphics.pk3
+	W_VerifyFileMD5(2, ASSET_HASH_SRB2P_CHARS_WAD);		// SRB2P-chars.wad
+	W_VerifyFileMD5(3, ASSET_HASH_SRB2P_MAIN_PK3);		// SRB2P-main.pk3
 	W_VerifyFileMD5(4, ASSET_HASH_SRB2P_MAPS_WAD);		// SRB2P-maps.wad
 	// Music, Sound -> +2
 	W_VerifyFileMD5(7, ASSET_HASH_SRB2P_PATCH_PK3);		// SRB2P-patch.pk3
