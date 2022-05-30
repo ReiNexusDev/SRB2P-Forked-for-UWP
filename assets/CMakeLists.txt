@@ -21,16 +21,11 @@ set(SRB2_ASSET_INSTALL ON
 
 set(SRB2_ASSET_HASHED
 "srb2.pk3;\
-<<<<<<< HEAD
 SRB2P-main.pk3;\
 SRB2P-graphics.pk3;\
 SRB2P-chars.wad;\
 SRB2P-maps.wad;\
 SRB2P-patch.pk3;"
-=======
-player.dta;\
-zones.pk3"
->>>>>>> master
 	CACHE STRING "Asset filenames to apply MD5 checks. No spaces between entries!"
 )
 
