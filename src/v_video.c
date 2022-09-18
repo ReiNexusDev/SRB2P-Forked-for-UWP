@@ -2493,7 +2493,16 @@ fixed_t V_SRB2PgenericStringWidth(const char *string, const char *prefix, fixed_
 
 		// Now we need to get the patch
 
-		pp = (patch_t *)W_CachePatchName2(lumpname, PU_HUDGFX);
+		//BIG BIG HACK: 1.3.5 intentionally omits a graphic for spaces, but patch loading is so unreliable that it occasionally FINDS something
+		//under this lump name. We can save ourselves both time and remove instability by doing a quick check for this codepoint and returning NULL
+		//which 99% of the time W_CachePatchName2 will do.
+		if (c != 0x20)
+		{
+			pp =  (patch_t *)W_CachePatchName2(lumpname, PU_HUDGFX);
+		}
+		else
+			pp = NULL;
+
 		if (pp != NULL)
 		{
 			// Adjust x offsets
@@ -2608,9 +2617,9 @@ void V_SRB2PgenericDrawString(INT32 x, INT32 y, const char *string, const char *
 		strcat(lumpname, ascii_03d[(UINT32)c -1]);	// -1. Remember that tables start at 0. Make it unsigned in case we have characters above 128!
 		
 		//BIG BIG HACK: 1.3.5 intentionally omits a graphic for spaces, but patch loading is so unreliable that it occasionally FINDS something
-		//under this lump name. We can save ourselves both time and remove instability by doing a quick check for this lumpname and returning NULL
+		//under this lump name. We can save ourselves both time and remove instability by doing a quick check for this codepoint and returning NULL
 		//which 99% of the time W_CachePatchName2 will do.
-		if (!strcmp(lumpname, "NFNT032"))
+		if (c != 0x20)
 		{
 			pp =  (patch_t *)W_CachePatchName2(lumpname, PU_HUDGFX);
 		}
