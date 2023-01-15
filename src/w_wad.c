@@ -1494,6 +1494,24 @@ lumpnum_t W_GetNumForName(const char *name)
 }
 
 //
+// W_GetNumForNameMusic
+//
+// Calls W_CheckNumForName, but does NOT bomb out if not found.
+// Geared towards checking for music files where the lump not
+// being found is not a call for a crash.
+//
+lumpnum_t W_GetNumForNameMusic(const char *name)
+{
+	lumpnum_t i;
+
+	i = W_CheckNumForName(name);
+
+	return i;
+}
+
+
+
+//
 // Like W_GetNumForName, but can find entries with long names
 //
 // Should be the only version, but that's not possible until we fix
