@@ -2615,7 +2615,10 @@ void V_SRB2PgenericDrawString(INT32 x, INT32 y, const char *string, const char *
 				V_DrawIndexPatch(x + xoffs + (2*scale), y + yoffs + (2*scale), scale, flags, pp, color2);
 
 			// Now draw it.
-			V_DrawIndexPatch(x + xoffs, y + yoffs, scale, flags, pp, color);
+			if ((UINT32)c >= 244)	// special characters that don't get recoloured
+				V_DrawFixedPatch(x + xoffs, y + yoffs, scale, flags, pp, NULL);
+			else
+				V_DrawIndexPatch(x + xoffs, y + yoffs, scale, flags, pp, color);
 
 			// Adjust x offsets
 			xoffs += (pp->width)*scale + scale/2;	// Add some wiggle room
