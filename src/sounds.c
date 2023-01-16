@@ -845,8 +845,10 @@ void S_InitRuntimeSounds (void)
 			sprintf(soundname, "fre0%d", value);
 		else if (value < 1000)
 			sprintf(soundname, "fre%d", value);
-		else
+		else if (value < 10000)
 			sprintf(soundname, "fr%d", value);
+		else
+			sprintf(soundname, "f%d", value);
 
 		strcpy(freeslotnames[value-1], soundname);
 
