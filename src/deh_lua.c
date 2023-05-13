@@ -544,6 +544,12 @@ static inline int lib_getenum(lua_State *L)
 		return 1;
 	}
 
+	// Fastpath for important srb2p variables that find their way here somehow
+	if(fastcmp(word, "server") || fastcmp(word, "battle") || fastcmp(word, "gamemap")|| fastcmp(word, "leveltime") || fastcmp(word, "netgame") || 
+	   fastcmp(word, "camera") || fastcmp(word, "splitscreen") || fastncmp(word,"chat_",5) || fastcmp(word, "paused") || fastcmp(word, "ctur")) {
+		return LUA_PushGlobals(L, word);
+	}
+
 	for (i = 0; INT_CONST[i].n; i++)
 		if (fastcmp(word,INT_CONST[i].n)) {
 			lua_pushinteger(L, INT_CONST[i].v);

@@ -341,13 +341,15 @@ consvar_t cv_mousemove2 = CVAR_INIT ("mousemove2", "Off", CV_SAVE, CV_OnOff, NUL
 
 // previously "analog", "analog2", "useranalog", and "useranalog2", invalidating 2.1-era copies of config.cfg
 // changed because it'd be nice to see people try out our actually good controls with gamepads now autobrake exists
+// SRB2P 15/01/23: configanalogn -> uconfiganalogn: invalidate old configs to reset analog to off.
+// it just works better for srb2p, being a much slower paced game.
 consvar_t cv_analog[2] = {
 	CVAR_INIT ("sessionanalog", "Off", CV_CALL|CV_NOSHOWHELP, CV_OnOff, Analog_OnChange),
 	CVAR_INIT ("sessionanalog2", "Off", CV_CALL|CV_NOSHOWHELP, CV_OnOff, Analog2_OnChange),
 };
 consvar_t cv_useranalog[2] = {
-	CVAR_INIT ("configanalog", "On", CV_SAVE|CV_CALL|CV_NOSHOWHELP, CV_OnOff, UserAnalog_OnChange),
-	CVAR_INIT ("configanalog2", "On", CV_SAVE|CV_CALL|CV_NOSHOWHELP, CV_OnOff, UserAnalog2_OnChange),
+	CVAR_INIT ("uconfiganalog", "Off", CV_SAVE|CV_CALL|CV_NOSHOWHELP, CV_OnOff, UserAnalog_OnChange),
+	CVAR_INIT ("uconfiganalog2", "Off", CV_SAVE|CV_CALL|CV_NOSHOWHELP, CV_OnOff, UserAnalog2_OnChange),
 };
 
 // deez New User eXperiences
