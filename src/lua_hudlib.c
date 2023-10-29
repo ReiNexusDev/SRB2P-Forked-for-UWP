@@ -677,6 +677,7 @@ static int libd_drawIndexScaled(lua_State *L)
 	INT32 flags;
 	patch_t *patch;
 	INT32 color;
+	huddrawlist_h list;
 
 	HUDONLY
 	x = luaL_checkinteger(L, 1);
@@ -690,7 +691,14 @@ static int libd_drawIndexScaled(lua_State *L)
 
 	flags &= ~V_PARAMMASK; // Don't let crashes happen.
 
-	V_DrawIndexPatch(x, y, scale, flags, patch, color);
+	lua_getfield(L, LUA_REGISTRYINDEX, "HUD_DRAW_LIST");
+	list = (huddrawlist_h) lua_touserdata(L, -1);
+	lua_pop(L, 1);
+
+	if (LUA_HUD_IsDrawListValid(list))
+		LUA_HUD_AddDrawIndexScaled(list, x, y, scale, patch, flags, color);
+	else
+		V_DrawIndexPatch(x, y, scale, flags, patch, color);
 	return 0;
 }
 
@@ -700,6 +708,7 @@ static int libd_drawIndexStretched(lua_State *L)
 	INT32 flags;
 	patch_t *patch;
 	INT32 color;
+	huddrawlist_h list;
 
 	HUDONLY
 	x = luaL_checkinteger(L, 1);
@@ -716,7 +725,14 @@ static int libd_drawIndexStretched(lua_State *L)
 
 	flags &= ~V_PARAMMASK; // Don't let crashes happen.
 
-	V_DrawIndexStretchyPatch(x, y, scale, vscale, flags, patch, color);
+	lua_getfield(L, LUA_REGISTRYINDEX, "HUD_DRAW_LIST");
+	list = (huddrawlist_h) lua_touserdata(L, -1);
+	lua_pop(L, 1);
+
+	if (LUA_HUD_IsDrawListValid(list))
+		LUA_HUD_AddDrawIndexStretched(list, x, y, scale, vscale, patch, flags, color);
+	else
+		V_DrawIndexStretchyPatch(x, y, scale, vscale, flags, patch, color);
 	return 0;
 }
 
@@ -916,11 +932,20 @@ static int libd_genericString(lua_State *L)
 	INT32 color = luaL_optinteger(L, 7, 0);
 	INT32 color2 = luaL_optinteger(L, 8, 31);
 	fixed_t scale = luaL_optinteger(L, 9, FRACUNIT/2);
+	huddrawlist_h list;
 
 	flags &= ~V_PARAMMASK; // Don't let crashes happen.
 
 	HUDONLY
-	V_SRB2PgenericDrawString(x, y, str, prefix, flags, align, color, color2, scale);
+
+	lua_getfield(L, LUA_REGISTRYINDEX, "HUD_DRAW_LIST");
+	list = (huddrawlist_h) lua_touserdata(L, -1);
+	lua_pop(L, 1);
+
+	if (LUA_HUD_IsDrawListValid(list))
+		LUA_HUD_AddDrawGenericString(list, x, y, prefix, str, flags, align, color, color2, scale);	
+	else
+		V_SRB2PgenericDrawString(x, y, str, prefix, flags, align, color, color2, scale);
 
 	return 0;
 }

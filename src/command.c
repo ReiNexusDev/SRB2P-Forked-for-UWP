@@ -626,7 +626,7 @@ const char *COM_CompleteAlias(const char *partial, INT32 skips)
   */
 static void COM_ExecuteString(char *ptext)
 {
-	//xcommand_t *cmd;
+	xcommand_t *cmd;
 	cmdalias_t *a;
 	static INT32 recursion = 0; // detects recursion and stops it if it goes too far
 
@@ -637,20 +637,20 @@ static void COM_ExecuteString(char *ptext)
 		return; // no tokens
 
 	// check functions
-	/*for (cmd = com_commands; cmd; cmd = cmd->next)
+	for (cmd = com_commands; cmd; cmd = cmd->next)
 	{
 		if (!stricmp(com_argv[0], cmd->name)) //case insensitive now that we have lower and uppercase!
 		{
-			if ((com_flags & COM_LUA) && !(cmd->flags & COM_LUA))
+			/*if ((com_flags & COM_LUA) && !(cmd->flags & COM_LUA))
 			{
 				CONS_Alert(CONS_WARNING, "Command '%s' cannot be run from Lua.\n", cmd->name);
 				return;
-			}
+			}*/
 
 			cmd->function();
 			return;
 		}
-	}*/
+	}
 
 	// check aliases
 	for (a = com_alias; a; a = a->next)
@@ -2391,11 +2391,11 @@ static boolean CV_Command(void)
 	if (!v)
 		return false;
 
-	if (CV_Immutable(v))
+	/*if (CV_Immutable(v))
 	{
 		CONS_Alert(CONS_WARNING, "Variable '%s' cannot be changed from Lua.\n", v->name);
 		return true;
-	}
+	}*/
 
 	// perform a variable print or set
 	if (COM_Argc() == 1)

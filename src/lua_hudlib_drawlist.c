@@ -20,12 +20,15 @@
 enum drawitem_e {
 	DI_Draw = 0,
 	DI_DrawScaled,
+	DI_DrawIndexScaled,
 	DI_DrawStretched,
+	DI_DrawIndexStretched,
 	DI_DrawCropped,
 	DI_DrawNum,
 	DI_DrawPaddedNum,
 	DI_DrawFill,
 	DI_DrawString,
+	DI_DrawGenericString,
 	DI_DrawNameTag,
 	DI_DrawScaledNameTag,
 	DI_DrawLevelTitle,
@@ -56,6 +59,8 @@ typedef struct drawitem_s {
 	INT32 num;
 	INT32 digits;
 	const char *str;
+	const char *str2;
+	const char *align2;
 	UINT16 color;
 	UINT8 strength;
 	INT32 align;
@@ -227,6 +232,27 @@ void LUA_HUD_AddDrawScaled(
 	item->colormap = colormap;
 }
 
+void LUA_HUD_AddDrawIndexScaled(
+	huddrawlist_h list,
+	fixed_t x,
+	fixed_t y,
+	fixed_t scale,
+	patch_t *patch,
+	INT32 flags,
+	UINT16 color
+)
+{
+	size_t i = AllocateDrawItem(list);
+	drawitem_t *item = &list->items[i];
+	item->type = DI_DrawIndexScaled;
+	item->x = x;
+	item->y = y;
+	item->scale = scale;
+	item->patch = patch;
+	item->flags = flags;
+	item->color = color;
+}
+
 void LUA_HUD_AddDrawStretched(
 	huddrawlist_h list,
 	fixed_t x,
@@ -248,6 +274,29 @@ void LUA_HUD_AddDrawStretched(
 	item->patch = patch;
 	item->flags = flags;
 	item->colormap = colormap;
+}
+
+void LUA_HUD_AddDrawIndexStretched(
+	huddrawlist_h list,
+	fixed_t x,
+	fixed_t y,
+	fixed_t hscale,
+	fixed_t vscale,
+	patch_t *patch,
+	INT32 flags,
+	UINT16 color
+)
+{
+	size_t i = AllocateDrawItem(list);
+	drawitem_t *item = &list->items[i];
+	item->type = DI_DrawIndexStretched;
+	item->x = x;
+	item->y = y;
+	item->hscale = hscale;
+	item->vscale = vscale;
+	item->patch = patch;
+	item->flags = flags;
+	item->color = color;
 }
 
 void LUA_HUD_AddDrawCropped(
@@ -355,6 +404,34 @@ void LUA_HUD_AddDrawString(
 	item->align = align;
 }
 
+void LUA_HUD_AddDrawGenericString(
+	huddrawlist_h list,
+	fixed_t x,
+	fixed_t y,
+	const char *prefix,
+	const char *str,
+	INT32 flags,
+	const char *align,
+	UINT16 color1,
+	UINT16 color2,
+	fixed_t scale
+)
+{
+
+	size_t i = AllocateDrawItem(list);
+	drawitem_t *item = &list->items[i];
+	item->type = DI_DrawGenericString;
+	item->x = x;
+	item->y = y;
+	item->str = CopyString(list, str);
+	item->str2 = CopyString(list, prefix);
+	item->flags = flags;
+	item->align2 = CopyString(list, align);
+	item->color = color1;
+	item->basecolor = color2;
+	item->scale = scale;
+}
+
 void LUA_HUD_AddDrawNameTag(
 	huddrawlist_h list,
 	INT32 x,
@@ -457,9 +534,15 @@ void LUA_HUD_DrawList(huddrawlist_h list)
 			case DI_DrawScaled:
 				V_DrawFixedPatch(item->x, item->y, item->scale, item->flags, item->patch, item->colormap);
 				break;
+			case DI_DrawIndexScaled:
+				V_DrawIndexPatch(item->x, item->y, item->scale, item->flags, item->patch, item->color);
+				break;				
 			case DI_DrawStretched:
 				V_DrawStretchyFixedPatch(item->x, item->y, item->hscale, item->vscale, item->flags, item->patch, item->colormap);
 				break;
+			case DI_DrawIndexStretched:
+				V_DrawIndexStretchyPatch(item->x, item->y, item->hscale, item->vscale, item->flags, item->patch, item->color);
+				break;				
 			case DI_DrawCropped:
 				V_DrawCroppedPatch(item->x, item->y, item->hscale, item->vscale, item->flags, item->patch, item->colormap, item->sx, item->sy, item->w, item->h);
 				break;
@@ -472,6 +555,9 @@ void LUA_HUD_DrawList(huddrawlist_h list)
 			case DI_DrawFill:
 				V_DrawFill(item->x, item->y, item->w, item->h, item->c);
 				break;
+			case DI_DrawGenericString:
+				V_SRB2PgenericDrawString(item->x, item->y, item->str, item->str2, item->flags, item->align2, item->color, item->basecolor, item->scale);
+				break;				
 			case DI_DrawString:
 				switch(item->align)
 				{

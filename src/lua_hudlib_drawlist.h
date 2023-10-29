@@ -51,6 +51,15 @@ void LUA_HUD_AddDrawScaled(
 	INT32 flags,
 	UINT8 *colormap
 );
+void LUA_HUD_AddDrawIndexScaled(
+	huddrawlist_h list,
+	fixed_t x,
+	fixed_t y,
+	fixed_t scale,
+	patch_t *patch,
+	INT32 flags,
+	UINT16 color
+);
 void LUA_HUD_AddDrawStretched(
 	huddrawlist_h list,
 	fixed_t x,
@@ -60,6 +69,16 @@ void LUA_HUD_AddDrawStretched(
 	patch_t *patch,
 	INT32 flags,
 	UINT8 *colormap
+);
+void LUA_HUD_AddDrawIndexStretched(
+	huddrawlist_h list,
+	fixed_t x,
+	fixed_t y,
+	fixed_t hscale,
+	fixed_t vscale,
+	patch_t *patch,
+	INT32 flags,
+	UINT16 color
 );
 void LUA_HUD_AddDrawCropped(
 	huddrawlist_h list,
@@ -106,6 +125,21 @@ void LUA_HUD_AddDrawString(
 	INT32 flags,
 	INT32 align
 );
+
+// V_SRB2PgenericDrawString(x, y, str, prefix, flags, align, color, color2, scale);
+void LUA_HUD_AddDrawGenericString(
+	huddrawlist_h list,
+	fixed_t x,
+	fixed_t y,
+	const char *prefix,
+	const char *str,
+	INT32 flags,
+	const char *align,
+	UINT16 color1,
+	UINT16 color2,
+	fixed_t scale
+);
+
 void LUA_HUD_AddDrawNameTag(
 	huddrawlist_h list,
 	INT32 x,
