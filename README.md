@@ -1,3 +1,5 @@
+## Disclaimer: This github is not for the MOD version of SRB2Persona and is in fact for the game version in the full installer, BASE SRB2+SRB2P MOD do not work together on console.
+
 # Sonic Robo Blast 2
 [![latest release](https://badgen.net/github/release/STJr/SRB2/stable)](https://github.com/STJr/SRB2/releases/latest)
 
