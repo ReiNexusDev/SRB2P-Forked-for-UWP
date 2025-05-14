@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:gaming="http://schemas.microsoft.com/appx/manifest/gaming/windows10"
+  IgnorableNamespaces="mp uap rescap desktop gaming">
+
+  <Identity
+    Name="SRB2P-Xbox"
+    Publisher="CN=Developer"
+    Version="1.0.0.0" />
+
+  <mp:PhoneIdentity PhoneProductId="00000000-0000-0000-0000-000000000000" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>SRB2 Persona for Xbox</DisplayName>
+    <PublisherDisplayName>SRB2P Team</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.16299.0" MaxVersionTested="10.0.18362.0" />
+    <TargetDeviceFamily Name="Windows.Xbox" MinVersion="10.0.16299.0" MaxVersionTested="10.0.18362.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="SRB2SDL2.App">
+      <uap:VisualElements
+        DisplayName="SRB2 Persona"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="Sonic Robo Blast 2 Persona"
+        BackgroundColor="#000000">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
+
+      <Extensions>
+        <gaming:XboxGameBar />
+        <gaming:GameList>
+          <gaming:Game>
+            <gaming:GameDefinition XboxLiveGameId="00000000-0000-0000-0000-000000000000" RequiresXboxLive="false" TileDisplayName="SRB2P" />
+          </gaming:Game>
+        </gaming:GameList>
+      </Extensions>
+
+    </Application>
+  </Applications>
+  
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <Capability Name="internetClientServer"/>
+    <Capability Name="privateNetworkClientServer"/>
+    <rescap:Capability Name="broadFileSystemAccess" />
+    <rescap:Capability Name="extendedBackgroundTaskTime" />
+    <rescap:Capability Name="runFullTrust" />
+    <rescap:Capability Name="localSystemServices" />
+    <gaming:Capability Name="xboxSystemServices" />
+    <gaming:Capability Name="chatCommunication" />
+    <gaming:Capability Name="multiplayerCommunication" />
+  </Capabilities>
+</Package>

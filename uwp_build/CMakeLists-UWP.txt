@@ -1,0 +1,85 @@
+cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
+
+# Set up CMAKE path
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
+include(CMakeDependentOption)
+
+# Enable UWP build
+set(CMAKE_SYSTEM_NAME WindowsStore)
+set(CMAKE_SYSTEM_VERSION 10.0)
+set(CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION 10.0.19041.0)
+set(CMAKE_VS_WINDOWS_TARGET_PLATFORM_MINVERSION 10.0.15063.0)
+
+# Tell CMake we're cross-compiling for UWP/UAP
+set(CMAKE_CROSSCOMPILING TRUE)
+
+# Set Xbox specific compiler flags
+set(SRB2_UWP_XBOX TRUE)
+add_definitions(-DUWP -DUWP_XBOX)
+
+file(STRINGS ../src/version.h SRB2_VERSION)
+string(REGEX MATCH "[0-9]+\\.[0-9.]+" SRB2_VERSION ${SRB2_VERSION})
+
+# DO NOT CHANGE THIS SRB2 STRING! Some variable names depend on this string.
+# Version change is fine.
+project(SRB2
+VERSION ${SRB2_VERSION}
+LANGUAGES C CXX)
+
+# Set UWP-specific build options
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Configure UWP-specific compiler flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /ZW /EHsc /await")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /ZW /EHsc")
+
+# UWP app packaging settings
+set(APPX_PACKAGE_Architecture x64)
+set(APPX_PACKAGE_NAME "SRB2P")
+set(APPX_PACKAGE_PUBLISHER "CN=ReiNexusDev")
+set(APPX_PACKAGE_PUBLISHER_DISPLAY_NAME "ReiNexusDev")
+set(APPX_PACKAGE_DESCRIPTION "Sonic Robo Blast 2 Persona - Xbox UWP Port")
+set(APPX_PACKAGE_DISPLAY_NAME "SRB2P Xbox")
+set(APPX_PACKAGE_LOGO "Assets/StoreLogo.png")
+set(APPX_PACKAGE_BACKGROUND_COLOR "#464646")
+
+# Dependencies - modify as needed for UWP
+add_subdirectory(../thirdparty thirdparty)
+
+# Set the output directories for UWP
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_PDB_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
+# Set UWP app packaging options
+set(VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION "10.0.14393.0")
+set(VS_MOBILE_EXTENSIONS TRUE)
+set(VS_IOT_EXTENSIONS TRUE)
+set(VS_XBOX_EXTENSIONS TRUE)
+
+# Import the main SRB2 source
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/../src)
+add_subdirectory(../src src)
+
+# Create AppxManifest.xml
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/AppxManifest.xml.in
+  ${CMAKE_CURRENT_BINARY_DIR}/AppxManifest.xml
+  @ONLY
+)
+
+# Include the assets for UWP packaging
+add_subdirectory(../assets assets)
+
+# Set up the package dependencies for UWP
+set_target_properties(SRB2SDL2 PROPERTIES 
+  VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION "${VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION}"
+  VS_PACKAGE_REFERENCES "Microsoft.Gaming.XboxGameBar_8wekyb3d8bbwe"
+)
+
+# Generate config.h
+set(SRB2_COMP_BRANCH "UWP_Xbox")
+set(SRB2_COMP_REVISION "UWP_${SRB2_VERSION}")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../src/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/src/config.h)

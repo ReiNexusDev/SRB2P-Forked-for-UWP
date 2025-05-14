@@ -1,0 +1,22 @@
+appId: com.reinexus.srb2p
+productName: SRB2P Xbox UWP
+directories:
+  output: release-builds
+files:
+  - "!node_modules/**/*"
+  - "electron/main.js"
+  - "dist/**/*"
+win:
+  target:
+    - appx
+appx:
+  applicationId: SRB2P.XboxUWP
+  backgroundColor: "#464646"
+  displayName: SRB2P Xbox UWP
+  publisherDisplayName: ReiNexusDev
+  identityName: ReiNexusDev.SRB2P
+  publisher: CN=ReiNexusDev
+  languages: ["en-us"]
+  addAutoLaunchExtension: true
+  manifestPath: electron/assets/AppxManifest.xml
+  assets: electron/assets
